@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 export default function Card() {
   const [qtd, setQtd] = useState('');
   const [selectedQTD, setselectedQtd] = useState('');
+  const nameInput = useRef(null);
 
   function handleClick() {
     setQtd(selectedQTD);
@@ -22,7 +23,12 @@ export default function Card() {
     async function loadAsyncStorage() {
       setQtd(await AsyncStorage.getItem('qdt'));
     }
-    loadAsyncStorage()
+
+    function name() {
+      nameInput.current.focus();
+    }
+    name();
+    loadAsyncStorage();
   }, []);
 
   return (
@@ -47,6 +53,7 @@ export default function Card() {
             onChangeText={setselectedQtd}
             style={styles.qtdInput}
             keyboardType="numeric"
+            ref={nameInput}
           />
           <TouchableOpacity style={styles.btn} onPress={handleClick}>
             <Text style={styles.txtbtn}>+</Text>
